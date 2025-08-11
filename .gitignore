@@ -38,4 +38,17 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# OS
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+*.local
+.dockerignore
 next-env.d.ts
