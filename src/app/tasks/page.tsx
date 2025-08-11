@@ -22,10 +22,14 @@ export default function Tasks() {
   // Removed local user state and effect, now using useSession
 
   useEffect(() => {
-    if (user) fetchTasks();
+    if (user) {
+      fetchTasks();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const fetchTasks = async () => {
+    if (!user) return;
     setLoading(true);
     setMessage("");
     const { data, error } = await supabase
@@ -40,6 +44,7 @@ export default function Tasks() {
 
   const addTask = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setLoading(true);
     setMessage("");
     const { error } = await supabase.from("tasks").insert({

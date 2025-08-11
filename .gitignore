@@ -51,4 +51,7 @@ Thumbs.db
 # Docker
 *.local
 .dockerignore
+docker-compose.override.yml
+docker-data/
+*.log
 next-env.d.ts
