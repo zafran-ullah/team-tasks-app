@@ -103,7 +103,7 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = file("${path.module}/id_ed25519.pub")
+    public_key = file("${path.module}/terraform_key.pub")
   }
 
   disable_password_authentication = true
