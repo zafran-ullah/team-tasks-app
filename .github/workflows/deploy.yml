@@ -38,12 +38,15 @@ jobs:
 
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.10
+        env:
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: ${{ secrets.VM_SSH_PORT }}
           script: |
+            echo "$GHCR_PAT" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             docker stop team-tasks-app || true
             docker rm team-tasks-app || true
