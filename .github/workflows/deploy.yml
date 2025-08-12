@@ -35,19 +35,17 @@ jobs:
           build-args: |
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
-
+            
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.10
-        env:
-          GHCR_PAT: ${{ secrets.GHCR_PAT }}
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           port: ${{ secrets.VM_SSH_PORT }}
           script: |
-            echo "$GHCR_PAT" | docker login ghcr.io -u zafran-ullah --password-stdin
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u zafran-ullah --password-stdin
+            docker pull ghcr.io/zafran-ullah/team-tasks-app:latest
             docker stop team-tasks-app || true
             docker rm team-tasks-app || true
             docker run -d --name team-tasks-app \
@@ -55,5 +53,5 @@ jobs:
               --env SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
               --env SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
               --env SERVICE_ROLE_KEY=${{ secrets.SERVICE_ROLE_KEY }} \
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+              ghcr.io/zafran-ullah/team-tasks-app:latest
             docker image prune -f
