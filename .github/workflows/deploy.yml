@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.VM_SSH_KEY }}
           port: ${{ secrets.VM_SSH_PORT }}
           script: |
-            docker login ghcr.io -u ${{ github.actor }} -p "$GHCR_PAT"
+            echo "$GHCR_PAT" | docker login ghcr.io -u zafran-ullah --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             docker stop team-tasks-app || true
             docker rm team-tasks-app || true
